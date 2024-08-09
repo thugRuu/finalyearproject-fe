@@ -8,7 +8,7 @@ import { Slot, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AuthProvider } from "@/components/Contex";
 
@@ -31,14 +31,9 @@ export default function RootLayout() {
     return null;
   }
 
-
   return (
-   
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <Slot />
-        </ThemeProvider>
-    
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <Slot />
+    </ThemeProvider>
   );
 }

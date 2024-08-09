@@ -4,8 +4,16 @@ import { Controller, useForm } from "react-hook-form";
 
 import { SignInData } from "@/interceptor/services/userService";
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { z } from "zod";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const userSchema = z.object({
   username: z.string(),
@@ -27,64 +35,54 @@ const SignInScreen = () => {
   };
   return (
     <>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Create an Account</Text>
-          <Text style={styles.subtitle}>Sign up to get started</Text>
-        </View>
-
-        {/* <Controller
-          control={control}
-          name="test"
-          render={({ field: { value, onChange } }) => (
-            <Slider
-              style={{ width: 200, height: 40 }}
-              minimumValue={1}
-              maximumValue={100}
-              value={sliderValue}
-              onValueChange={(newValue) => {
-                setSliderValue(newValue);
-                onChange(newValue);
-              }}
-              minimumTrackTintColor="#FFFFFF"
-              maximumTrackTintColor="#000000"
-            />
-          )}
-        /> */}
-        <View>
-          <Text>{message}</Text>
-        </View>
-        <Controller
-          control={control}
-          name="username"
-          render={({ field: { value, onChange, onBlur } }) => (
-            <TextInput
-              placeholder="username"
-              style={styles.input}
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-            />
-          )}
-        />
-
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { value, onChange, onBlur } }) => (
-            <TextInput
-              placeholder="password"
-              style={styles.input}
-              value={value}
-              onChangeText={onChange}
-              onBlur={onBlur}
-            />
-          )}
-        />
-        <Pressable onPress={handleSubmit(onSubmit)}>
-          <Text>submit</Text>
-        </Pressable>
-      </View>
+      <SafeAreaView className="flex-1 p-4 bg-[#a6ccc5]">
+        <ScrollView
+          showsVerticalScrollIndicator={false} // Hide vertical scrollbar
+          showsHorizontalScrollIndicator={false} // Hide horizontal scrollbar
+        >
+          <View className="h-56 pt-28 flex flex-col justify-center space-y-2 ">
+            <Text className="text-5xl font-bold">Sign In</Text>
+            <Text className="text-xl">Sign in to get started</Text>
+          </View>
+          <View className="pt-12 flex flex-col space-y-8">
+            <View>
+              <Controller
+                control={control}
+                name="username"
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextInput
+                    placeholder="Username"
+                    className="bg-transparent border-b border-solid placeholder:text-xl placeholder:text-black placeholder:font-bold placeholder:p-2"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                  />
+                )}
+              />
+            </View>
+            <View>
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <TextInput
+                    placeholder="Password"
+                    className="bg-transparent border-b border-solid placeholder:text-xl placeholder:text-black placeholder:font-bold placeholder:p-2"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                  />
+                )}
+              />
+            </View>
+            <Pressable className="pt-4" onPress={handleSubmit(onSubmit)}>
+              <Text className="text-xl font-bold bg-black rounded-2xl text-white py-3 text-center">
+                Sign In{" "}
+              </Text>
+            </Pressable>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 };

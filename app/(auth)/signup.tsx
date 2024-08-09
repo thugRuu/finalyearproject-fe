@@ -1,28 +1,11 @@
 // SignUpScreen.js
 import { useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
-import Slider from "@react-native-community/slider";
 
-import {
-  View,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Pressable,
-  Button,
-} from "react-native";
+import { SignUpData } from "@/interceptor/services/userService";
 import { useState } from "react";
-import axios from "axios";
-import {  SignUpData } from "@/interceptor/services/userService";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-type IUser = {
-  email: string;
-  username: string;
-  password: string;
-};
 
 export const userSchema = z.object({
   username: z.string(),
