@@ -1,7 +1,8 @@
+import { getStringValue } from "@/hooks/getStringValue";
 import axios from "axios";
 
 const axiosInterceptor = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "http://192.168.1.73:5000/api",
   timeout: 10000,
   headers: {
     Accept: "application/json",
@@ -12,7 +13,8 @@ const axiosInterceptor = axios.create({
 
 axiosInterceptor.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem("accessToken") || "";
+    // const accessToken = localStorage.getItem("accessToken") || "";
+    const accessToken = getStringValue("token");
 
     if (accessToken) {
       if (config.headers)
