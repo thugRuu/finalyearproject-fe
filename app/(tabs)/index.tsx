@@ -1,33 +1,28 @@
+import React from "react";
 import { Image, StyleSheet, Platform, View, Text } from "react-native";
 
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+// export default function HomeScreen() {
+//   return (
+//       <SafeAreaView>
+//         <NativeBaseProvider isSSR={false}>
+//           <Box className="text-white">Hello world</Box>
+//         </NativeBaseProvider>
+//       </SafeAreaView>
+//   );
+// }
 
 export default function HomeScreen() {
   return (
-    <View>
-      <Text>hello from te index page</Text>
-    </View>
+    <SafeAreaView>
+      <View>
+        <Text> hello world</Text>
+      </View>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
-});

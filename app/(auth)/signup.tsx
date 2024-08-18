@@ -2,7 +2,6 @@
 import { Link, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 
-import { SignUpData } from "@/interceptor/services/userService";
 import { useState } from "react";
 import {
   Pressable,
@@ -14,6 +13,7 @@ import {
 } from "react-native";
 import { z } from "zod";
 import { SafeAreaView } from "react-native-safe-area-context";
+import axiosInterceptor from "@/interceptor/axiosinterceptor";
 
 export const userSchema = z.object({
   username: z.string(),
@@ -40,7 +40,6 @@ const SignUpScreen = () => {
       role: "user",
       username: "",
       password: "",
-
       email: "",
       country: "",
       city: "",
@@ -50,10 +49,7 @@ const SignUpScreen = () => {
   const [sliderValue, setSliderValue] = useState(0);
   const [message, setMessage] = useState("");
   const onSubmit = (data: z.infer<typeof userSchema>) => {
-    SignUpData({ data })
-      .then((response) => console.log(response.data))
-      .catch((e) => console.log(e));
-    console.log(data);
+    axiosInterceptor.post("/user", data);
   };
   return (
     <>

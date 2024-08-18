@@ -2,7 +2,7 @@ import { getStringValue } from "@/hooks/getStringValue";
 import axios from "axios";
 
 const axiosInterceptor = axios.create({
-  baseURL: "http://192.168.1.73:5000/api",
+  baseURL: "http://192.168.18.158:8000/api",
   timeout: 10000,
   headers: {
     Accept: "application/json",
@@ -12,9 +12,9 @@ const axiosInterceptor = axios.create({
 });
 
 axiosInterceptor.interceptors.request.use(
-  (config) => {
+  async (config) => {
     // const accessToken = localStorage.getItem("accessToken") || "";
-    const accessToken = getStringValue("token");
+    const accessToken = await getStringValue("details");
 
     if (accessToken) {
       if (config.headers)

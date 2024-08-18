@@ -1,24 +1,19 @@
-import { Redirect, router, Tabs } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { Text } from "react-native";
 import { getStringValue } from "@/hooks/getStringValue";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import { Redirect, Tabs } from "expo-router";
 import { useState } from "react";
-import { deleteString } from "@/hooks/deleteStringValue";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const [auth, setAuth] = useState("");
 
-  // getStringValue("token").then((a) => setAuth(a!));
-  deleteString("token");
+  getStringValue("details").then((a) => setAuth(a!));
 
-  if (!auth) {
+  if (auth === null) {
     return <Redirect href="/login" />;
   }
-  console.log(!auth);
   return (
     <>
       <Tabs
@@ -34,6 +29,18 @@ export default function TabLayout() {
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon
                 name={focused ? "home" : "home-outline"}
+                color={color}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: "Profile",
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon
+                name={focused ? "code-slash" : "code-slash-outline"}
                 color={color}
               />
             ),

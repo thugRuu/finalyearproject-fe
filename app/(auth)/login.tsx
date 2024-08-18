@@ -1,8 +1,7 @@
 // SignUpScreen.js
-import { Link, useRouter } from "expo-router";
+import { Link, Redirect, useRouter } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 
-import { SignInData } from "@/interceptor/services/userService";
 import { useState } from "react";
 import {
   Pressable,
@@ -15,6 +14,10 @@ import {
 import { z } from "zod";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
+import { IPutString, putStringValue } from "@/hooks/putStringValue";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getStringValue } from "@/hooks/getStringValue";
+import axiosInterceptor from "@/interceptor/axiosinterceptor";
 
 export const userSchema = z.object({
   username: z.string(),
@@ -22,7 +25,7 @@ export const userSchema = z.object({
 });
 const SignInScreen = () => {
   const router = useRouter();
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       username: "",
       password: "",
@@ -32,11 +35,20 @@ const SignInScreen = () => {
   const [sliderValue, setSliderValue] = useState(0);
   const [message, setMessage] = useState("");
 
-  const onSubmit = (data: z.infer<typeof userSchema>) => {
-    SignInData({ data }).then((response) => console.log(response.data));
-
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof userSchema>) => {
+    const response = await axiosInterceptor.post("/user/signin", data);
+    console.log(response);
+    if (!response.data.message) {
+      const token = response.data.token;
+      await putStringValue(response.data);
+      const auth = await getStringValue("details");
+      if (auth.token === token) {
+        router.replace("/(tabs)");
+      }
+    }
+    reset();
   };
+
   return (
     <>
       <SafeAreaView className="flex-1 p-4 bg-[#a6ccc5]">
