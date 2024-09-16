@@ -4,7 +4,7 @@ import { deleteString } from "@/hooks/deleteStringValue";
 import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getStringValue } from "@/hooks/getStringValue";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 export default function TabTwoScreen() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function TabTwoScreen() {
           Logout
         </Text>
       </Pressable>
-      <Pressable
+      {/* <Pressable
         onPress={async () => {
           router.replace("/questions");
         }}
@@ -28,7 +28,8 @@ export default function TabTwoScreen() {
         <Text className="text-white flex items-center justify-center h-96">
           question
         </Text>
-      </Pressable>
+      </Pressable> */}
+      <Link href="/questions"> question</Link>
     </SafeAreaView>
   );
 }
