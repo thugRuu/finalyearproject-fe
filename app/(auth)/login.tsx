@@ -10,6 +10,7 @@ import {
   Text,
   TextInput,
   View,
+  KeyboardAvoidingView,
 } from "react-native";
 import { z } from "zod";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -56,64 +57,68 @@ const SignInScreen = () => {
           showsVerticalScrollIndicator={false} // Hide vertical scrollbar
           showsHorizontalScrollIndicator={false} // Hide horizontal scrollbar
         >
-          <View className="h-56 pt-28 flex flex-col justify-center space-y-2 ">
-            <Text className="text-5xl font-bold">Sign In</Text>
-            <Text className="text-xl">Sign in to get started</Text>
-          </View>
-          <View className="flex flex-col space-y-8">
-            <View className="h-12">
-              <Text>{message}</Text>
+          <KeyboardAvoidingView>
+            <View className="h-56 pt-28 flex flex-col justify-center space-y-2 ">
+              <Text className="text-5xl font-bold">Sign In</Text>
+              <Text className="text-xl">Sign in to get started</Text>
             </View>
-            <View>
-              <Text className="text-xl">Username</Text>
-              <Controller
-                control={control}
-                name="username"
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextInput
-                    className="bg-transparent focus:bg- border border-solid placeholder:text-xl h-10 rounded-lg px-3"
-                    value={value}
-                    onChangeText={onChange}
-                  />
-                )}
-              />
-            </View>
-            <View>
-              <Text className="text-xl">Password</Text>
-              <Controller
-                control={control}
-                name="password"
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <TextInput
-                    className="bg-transparent  border border-solid placeholder:text-xl h-10 rounded-lg px-3"
-                    value={value}
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                  />
-                )}
-              />
-            </View>
-            <Pressable className="pt-4" onPress={handleSubmit(onSubmit)}>
-              <Text
-                className={
-                  "text-xl font-bold bg-black rounded-2xl text-white py-3 text-center"
-                }
-              >
-                Sign In{" "}
-              </Text>
-            </Pressable>
-            <View>
-              <Text>
-                Don't have an Account?{" "}
-                <Link
-                  className="text-blue-950 font-bold text-lg"
-                  href={"/signup"}
+            <View className="flex flex-col space-y-8">
+              <View className="h-12">
+                <Text>{message}</Text>
+              </View>
+              <View>
+                <Text className="text-xl">Username</Text>
+                <Controller
+                  control={control}
+                  name="username"
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextInput
+                      autoCapitalize="none"
+                      className="bg-transparent focus:bg- border border-solid placeholder:text-xl h-10 rounded-lg px-3"
+                      value={value}
+                      onChangeText={onChange}
+                    />
+                  )}
+                />
+              </View>
+              <View>
+                <Text className="text-xl">Password</Text>
+                <Controller
+                  control={control}
+                  name="password"
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextInput
+                      autoCapitalize="none"
+                      className="bg-transparent  border border-solid placeholder:text-xl h-10 rounded-lg px-3"
+                      value={value}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                    />
+                  )}
+                />
+              </View>
+              <Pressable className="pt-4" onPress={handleSubmit(onSubmit)}>
+                <Text
+                  className={
+                    "text-xl font-bold bg-black rounded-2xl text-white py-3 text-center"
+                  }
                 >
-                  Sign up
-                </Link>
-              </Text>
+                  Sign In{" "}
+                </Text>
+              </Pressable>
+              <View>
+                <Text>
+                  Don't have an Account?{" "}
+                  <Link
+                    className="text-blue-950 font-bold text-lg"
+                    href={"/signup"}
+                  >
+                    Sign up
+                  </Link>
+                </Text>
+              </View>
             </View>
-          </View>
+          </KeyboardAvoidingView>
         </ScrollView>
       </SafeAreaView>
     </>

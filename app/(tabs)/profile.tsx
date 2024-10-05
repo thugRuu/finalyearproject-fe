@@ -1,7 +1,7 @@
 import { getStringValue } from "@/hooks/getStringValue";
 import axiosInterceptor from "@/interceptor/axiosinterceptor";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { string } from "zod";
 
@@ -23,7 +23,6 @@ export default function Profile() {
   const [answer, setAnswer] = useState<QandA>([{ question: "", answer: "" }]);
   const [loading, setLoading] = useState<boolean>(true); // To manage loading state
   const [profileLoaded, setProfileLoaded] = useState<boolean>(false); // To manage profile loading
-  const array = [1, 2, 3, 4, 5, 6];
   console.log(answer);
 
   // Fetch profile data
@@ -78,6 +77,16 @@ export default function Profile() {
             ))}
           </View>
         )}
+      </View>
+      <View className="flex items-center mt-4 space-y-4">
+        <TouchableOpacity className="bg-purple-600 py-3 px-8 rounded-full">
+          <Text className="text-white text-lg font-semibold">Get Started</Text>
+        </TouchableOpacity>
+        <TouchableOpacity className="bg-gray-100 py-3 px-8 rounded-full">
+          <Text className="text-gray-800 text-lg font-semibold">
+            Log In / Sign Up
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

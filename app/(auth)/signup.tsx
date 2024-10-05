@@ -70,6 +70,7 @@ const SignUpScreen = () => {
                 name="email"
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
+                    autoCapitalize="none"
                     className="bg-transparent focus:bg- border border-solid placeholder:text-xl h-10 rounded-lg px-3"
                     value={value}
                     onChangeText={onChange}
@@ -84,6 +85,7 @@ const SignUpScreen = () => {
                 name="username"
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
+                    autoCapitalize="none"
                     className="bg-transparent focus:bg- border border-solid placeholder:text-xl h-10 rounded-lg px-3"
                     value={value}
                     onChangeText={onChange}
@@ -98,6 +100,7 @@ const SignUpScreen = () => {
                 name="password"
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
+                    autoCapitalize="none"
                     className="bg-transparent  border border-solid placeholder:text-xl h-10 rounded-lg px-3"
                     value={value}
                     onChangeText={onChange}
