@@ -13,6 +13,11 @@ type QuestionType = {
   question: string;
   _id: string;
 };
+type ProfileData = {
+  _id: string;
+  token: string;
+  username: string;
+};
 
 const schema = z.object({
   diet: z
@@ -107,8 +112,6 @@ const schema = z.object({
     }),
 });
 
-
-
 export default function index() {
   const [profileData, setProfileData] = useState<ProfileData>({
     _id: "",
@@ -117,7 +120,7 @@ export default function index() {
   });
   const [questions, setQuestions] = useState<QuestionType[]>([]);
 
- useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getStringValue("details");
@@ -125,10 +128,10 @@ export default function index() {
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
-     
-    }
-     fetchData()
-    },[])
+    };
+    fetchData();
+  }, []);
+
   useEffect(() => {
     const getQuestions = async () => {
       const response = await axiosInterceptor.get("/question");
@@ -136,13 +139,21 @@ export default function index() {
     };
     getQuestions();
   }, []);
+
   const questionArray = questions.map((item) => item.question);
   type FormData = z.infer<typeof schema>;
 
-const onSubmit = (data:any) => {
-  console.log(data);
-  console.log(profileData);
-};
+  const onSubmit = (data: any) => {
+    const formattedData = {
+      answers: data,
+      userData: {
+        _id: profileData._id,
+      },
+    };
+    console.log(formattedData);
+
+    axiosInterceptor.post("/prediction", formattedData);
+  };
   const {
     control,
     handleSubmit,
@@ -464,4 +475,3 @@ const onSubmit = (data:any) => {
     </SafeAreaView>
   );
 }
-
