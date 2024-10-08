@@ -7,6 +7,7 @@ import { z, ZodType } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Picker } from "@react-native-picker/picker";
 import { StyleSheet } from "react-native";
+import { getStringValue } from "@/hooks/getStringValue";
 
 type QuestionType = {
   question: string;
@@ -105,13 +106,29 @@ const schema = z.object({
       message: "Energy efficiency must be a numeric value",
     }),
 });
-const onSubmit = (data: any) => {
-  console.log(data);
-};
+
+
 
 export default function index() {
+  const [profileData, setProfileData] = useState<ProfileData>({
+    _id: "",
+    token: "",
+    username: "",
+  });
   const [questions, setQuestions] = useState<QuestionType[]>([]);
 
+ useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getStringValue("details");
+        setProfileData(response!); // Ensure response is not null
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+     
+    }
+     fetchData()
+    },[])
   useEffect(() => {
     const getQuestions = async () => {
       const response = await axiosInterceptor.get("/question");
@@ -120,10 +137,12 @@ export default function index() {
     getQuestions();
   }, []);
   const questionArray = questions.map((item) => item.question);
-  console.log(questionArray);
-
   type FormData = z.infer<typeof schema>;
 
+const onSubmit = (data:any) => {
+  console.log(data);
+  console.log(profileData);
+};
   const {
     control,
     handleSubmit,
@@ -445,3 +464,4 @@ export default function index() {
     </SafeAreaView>
   );
 }
+
