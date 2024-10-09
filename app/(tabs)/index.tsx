@@ -15,12 +15,30 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { getStringValue } from "@/hooks/getStringValue";
+import axiosInterceptor from "@/interceptor/axiosinterceptor";
+import { string } from "zod";
 
 type ProfileData = {
   _id: string;
   token: string;
   username: string;
 };
+type analysisType = {
+  _id: string;
+  userId: {
+    id: string;
+    username: string;
+  };
+  analysis: {
+    question: {
+      _id: string;
+      question: string;
+    };
+    answer: string;
+    _id: string;
+  }[];
+  carbonFootprint: string;
+}[];
 
 export default function HomeScreen() {
   const [profileData, setProfileData] = useState<ProfileData>({
@@ -28,6 +46,27 @@ export default function HomeScreen() {
     token: "",
     username: "",
   });
+  const [analysis, setAnalysis] = useState<analysisType>([
+    {
+      _id: "",
+      userId: {
+        id: "",
+        username: "",
+      },
+      analysis: [
+        {
+          question: {
+            _id: "",
+            question: "",
+          },
+          answer: "",
+          _id: "",
+        },
+      ],
+      carbonFootprint: "",
+    },
+  ]);
+  const [rec, setRec] = useState([""]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,11 +80,35 @@ export default function HomeScreen() {
 
     fetchData(); // Fetch profile data
   }, []);
+  useEffect(() => {
+    const analysisData = async () => {
+      try {
+        const res = await axiosInterceptor.get(`/analysis/` + profileData._id);
+        setAnalysis(res.data);
+      } catch (e) {
+        console.log("e:", e);
+      }
+    };
+    analysisData();
+  }, []);
+
+  useEffect(() => {
+    const recomendation = async () => {
+      try {
+        const res = await axiosInterceptor.get(`sugession/` + profileData._id);
+        setRec(res.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    recomendation();
+  }, [profileData._id]);
+  const carbonFP = analysis[0].carbonFootprint;
   return (
-    <SafeAreaView className="flex-1 bg-[#a6ccc5]">
+    <SafeAreaView className="flex-1 py-6 px-4 bg-[#a6ccc5]">
       <ScrollView>
         {/* Header Section */}
-        <View className="flex py-6 px-4">
+        <View className="flex ">
           <Text className="text-4xl font-bold">
             Hello {profileData.username}
           </Text>
@@ -53,47 +116,8 @@ export default function HomeScreen() {
             Track your carbon footprint & make smart choices
           </Text>
         </View>
-
-        {/* CTA Buttons */}
-
-        {/* Feature Overview (Swipeable Cards) */}
-        <View className="mt-8">
-          <View className="flex flex-row flex-wrap justify-between gap-8 px-4">
-            <View className="bg-purple-100 p-4 rounded-lg w-[50%]">
-              <Text className="text-lg font-semibold">
-                Calculate Your Carbon Footprint
-              </Text>
-              <Text className="text-sm text-gray-500 mt-2">
-                Enter your details to get started.
-              </Text>
-            </View>
-
-            <View className="bg-green-100 p-4 rounded-lg w-[50%]">
-              <Text className="text-lg font-semibold">
-                Personalized Suggestions
-              </Text>
-              <Text className="text-sm text-gray-500 mt-2">
-                Get AI-driven advice to reduce impact.
-              </Text>
-            </View>
-
-            <View className="bg-blue-100 p-4 rounded-lg w-[50%]">
-              <Text className="text-lg font-semibold">Track Your Progress</Text>
-              <Text className="text-sm text-gray-500 mt-2">
-                See how you’ve improved over time.
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Progress Snapshot (If Logged In) */}
-        <View className="flex items-center mt-8">
-          <Text className="text-lg font-bold">
-            Your Last Carbon Footprint: 1.2 Tons CO2
-          </Text>
-          <TouchableOpacity className="mt-2">
-            <Text className="text-purple-600">View Full Report →</Text>
-          </TouchableOpacity>
+        <View>
+          <Text className="text-4xl font-extrabold">{carbonFP} kg CO₂e</Text>
         </View>
 
         {/* Swipeable Tips */}
@@ -101,43 +125,16 @@ export default function HomeScreen() {
           <Text className="text-center text-lg font-bold mb-4">
             Sustainability Tips
           </Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            className="flex-row space-x-4 px-4"
-          >
-            <View className="bg-yellow-100 p-4 rounded-lg w-60">
-              <Text className="text-lg font-semibold">Reduce Food Waste</Text>
-              <Text className="text-sm text-gray-500 mt-2">
-                Meal planning can help!
-              </Text>
-            </View>
-            <View className="bg-pink-100 p-4 rounded-lg w-60">
-              <Text className="text-lg font-semibold">
-                Use Public Transport
-              </Text>
-              <Text className="text-sm text-gray-500 mt-2">
-                Switch to sustainable transportation.
-              </Text>
-            </View>
-          </ScrollView>
+          <View className="w-full space-y-6">
+            {rec.map((data, i) => (
+              <View key={i}>
+                <View className="bg-yellow-100 p-4 rounded-lg w-60">
+                  <Text className="text-lg font-semibold">{data}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
         </View>
-
-        {/* Quick Actions */}
-        {/* <View className="mt-8 flex-row justify-center space-x-8">
-          <TouchableOpacity className="items-center">
-            <HomeIcon className="text-purple-600" />
-            <Text className="text-sm">Calculate</Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="items-center">
-            <SuggestionsIcon className="text-green-600" />
-            <Text className="text-sm">Suggestions</Text>
-          </TouchableOpacity>
-          <TouchableOpacity className="items-center">
-            <ResultsIcon className="text-blue-600" />
-            <Text className="text-sm">Results</Text>
-          </TouchableOpacity>
-        </View> */}
       </ScrollView>
     </SafeAreaView>
   );
