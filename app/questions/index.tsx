@@ -8,6 +8,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Picker } from "@react-native-picker/picker";
 import { StyleSheet } from "react-native";
 import { getStringValue } from "@/hooks/getStringValue";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+
 
 type QuestionType = {
   question: string;
@@ -150,9 +154,13 @@ export default function index() {
         _id: profileData._id,
       },
     };
-    console.log(formattedData);
 
-    axiosInterceptor.post("/prediction", formattedData);
+    axiosInterceptor.post("/prediction", formattedData).then(res => console.log(res)).then(  ()=>{
+
+      router.replace("/(tabs)")
+    } 
+    )
+
   };
   const {
     control,
@@ -178,12 +186,42 @@ export default function index() {
       energyEfficiency: "",
     },
   });
+  console.log(profileData._id, profileData.username)
+
+  useEffect(() => {
+    const deleteData = async () => {
+      try{
+
+        if (profileData._id) {
+          
+          // First DELETE request for suggestion
+          const suggestionResponse = await axios.delete(`http://192.168.1.73:8000/api/sugession/${profileData._id}`);
+          console.log('Suggestion deleted:', suggestionResponse);
+          
+          // Second DELETE request for analysis
+          const analysisResponse = await axios.delete(`http://192.168.1.73:8000/api/analysis/${profileData._id}`);
+          console.log('Analysis deleted:', analysisResponse);
+          
+        }
+      }catch(e){
+        console.log(e)
+      }
+      };
+
+    deleteData(); // Call the async function
+  }, [profileData._id]);
 
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView  className="flex-1 bg-gray-100 p-4">
+      <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
         <View>
-          <Text>Question</Text>
+        <Text className="text-3xl font-bold text-center text-gray-800 mb-4">
+          Hello {profileData.username}!
+        </Text>
+
+        <Text className="text-lg text-center text-gray-600 mb-6">
+          Please answer the following questions to estimate your carbon footprint.
+        </Text>
           <View>
             <Text>{questionArray[0]}</Text>
             <Controller

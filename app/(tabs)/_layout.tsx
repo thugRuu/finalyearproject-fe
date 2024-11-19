@@ -46,6 +46,7 @@ export default function TabLayout() {
             ),
           }}
         />
+       
         <Tabs.Screen
           name="explore"
           options={{
@@ -55,10 +56,12 @@ export default function TabLayout() {
                 name={focused ? "code-slash" : "code-slash-outline"}
                 color={color}
               />
+              
             ),
           }}
         />
       </Tabs>
+      
     </>
   );
 }

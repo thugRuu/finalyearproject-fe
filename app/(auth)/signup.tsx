@@ -35,7 +35,7 @@ export const userSchema = z.object({
 // });
 const SignUpScreen = () => {
   const router = useRouter();
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       role: "user",
       username: "",
@@ -49,7 +49,8 @@ const SignUpScreen = () => {
   const [sliderValue, setSliderValue] = useState(0);
   const [message, setMessage] = useState("");
   const onSubmit = (data: z.infer<typeof userSchema>) => {
-    axiosInterceptor.post("/user", data);
+    axiosInterceptor.post("/user", data).then((response)=> console.log("UserRegister Response", response.data))
+    reset()
   };
   return (
     <>
