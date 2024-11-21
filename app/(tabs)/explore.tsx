@@ -53,7 +53,7 @@ export default function TabTwoScreen() {
   useEffect(()=>{
     if (profile?._id) {
       axios
-        .get(`https://finalyearproject-be.onrender.com/api/user/${profile._id}`)
+        .get(`https://fypbackendfinal.onrender.com/api/user/${profile._id}`)
         .then((response) => {
           const data = response.data;
           setUserData(data); // Update state with user data
@@ -75,25 +75,25 @@ export default function TabTwoScreen() {
     <SafeAreaView className="flex-1 p-6 bg-[#EFE2CF]">
       <Text className="text-3xl rounded-lg p-4 bg-[#FFE0B5] text-center font-semibold text-gray-800 mb-2">User Profile</Text>
 
-     <View className="bg-[#EFE2CF] shadow-md rounded-lg p-5 m-4">
+     <View className="bg-[#EFE2CF] shadow-md rounded-lg p-2 m-4">
       <View className="">
       <View className="p-2 space-y-3">
-  <View className=" rounded-lg p-4 shadow-md">
+  <View className=" rounded-lg p-2">
     <Text className="text-lg font-semibold text-gray-700">Username</Text>
     <Text className="text-gray-500">{userData.username}</Text>
   </View>
 
-  <View className=" rounded-lg p-4 shadow-md">
+  <View className=" rounded-lg p-2">
     <Text className="text-lg font-semibold text-gray-700">Email</Text>
     <Text className="text-gray-500">{userData.email}</Text>
   </View>
 
-  <View className=" rounded-lg p-4 shadow-md">
+  <View className=" rounded-lg p-2">
     <Text className="text-lg font-semibold text-gray-700">Country</Text>
     <Text className="text-gray-500">{userData.country}</Text>
   </View>
 
-  <View className=" rounded-lg p-4 shadow-md">
+  <View className=" rounded-lg p-2">
     <Text className="text-lg font-semibold text-gray-700">City</Text>
     <Text className="text-gray-500">{userData.city}</Text>
   </View>

@@ -49,7 +49,7 @@ export default function Index() {
   useEffect(() => {
     if (id) {
       axios
-        .get(`https://finalyearproject-be.onrender.com/api/user/${id}`)
+        .get(`https://fypbackendfinal.onrender.com/api/user/${id}`)
         .then((response) => {
           const data = response.data;
           reset({
@@ -77,7 +77,7 @@ export default function Index() {
     Alert.alert("Success", "User profile updated successfully You will be redirected to login page.");
 
     axios
-      .put(`https://finalyearproject-be.onrender.com/api/user/${id}`, formData)
+      .put(`https://fypbackendfinal.onrender.com/api/user/${id}`, formData)
     .then(()=>{ router.push("/(tabs)")})
       .catch((error) => {
         console.error("Error updating user data:", error);

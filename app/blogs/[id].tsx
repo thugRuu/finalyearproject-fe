@@ -5,6 +5,11 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import RenderHtml from 'react-native-render-html';
 import axios from 'axios';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs([
+  'Warning: bound renderChildren: Support for defaultProps will be removed',
+]);
 
 type IBlog = {
   "_id":string,
@@ -43,7 +48,7 @@ const router = useRouter();
 
     const fetchAnswers = async () => {
       try {
-        const response = await axios.get(`https://finalyearproject-be.onrender.com/api/blogs/${id}`);
+        const response = await axios.get(`https://fypbackendfinal.onrender.com/api/blogs/${id}`);
         setBlogDetails(response.data);
       } catch (error) {
         console.error("Error fetching blog details:", error);

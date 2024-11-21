@@ -178,11 +178,11 @@ export default function index() {
         if (profileData._id) {
           
           // First DELETE request for suggestion
-          const suggestionResponse = await axios.delete(`https://finalyearproject-be.onrender.com/api/sugession/${profileData._id}`);
+          const suggestionResponse = await axios.delete(`https://fypbackendfinal.onrender.com/api/sugession/${profileData._id}`);
           console.log('Suggestion deleted:', suggestionResponse);
           
           // Second DELETE request for analysis
-          const analysisResponse = await axios.delete(`https://finalyearproject-be.onrender.com/api/analysis/${profileData._id}`);
+          const analysisResponse = await axios.delete(`https://fypbackendfinal.onrender.com/api/analysis/${profileData._id}`);
           console.log('Analysis deleted:', analysisResponse);
           
         }

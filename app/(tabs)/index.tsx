@@ -28,25 +28,12 @@ message:string
 export default function HomePage() {
   const [analysis, setAnalysis] = useState<IAnalysis | null>(null);
   const [profile, setProfile] = useState({ username: '', _id: '', token: '' });
-  const [recommended, setRecommended] = useState([]);
-  const [isMounted, setIsMounted] = useState(false); // Track if the component is mounted
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [recommended, setRecommended] = useState({recommendation:[]});
   const router = useRouter();
   const [animation] = useState(new Animated.Value(0));
  
-  const toggleExpand = () => {
-    Animated.timing(animation, {
-        toValue: isCollapsed ? 1 : 0,
-        duration: 300,
-        useNativeDriver: false,
-    }).start();
-    setIsCollapsed(!isCollapsed);
-};
 
-const heightInterpolation = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 100],  // Adjust height for the content
-});
+
   // Fetch the profile from AsyncStorage
   useEffect(() => {
     AsyncStorage.getItem('details')
@@ -67,7 +54,7 @@ const heightInterpolation = animation.interpolate({
   useEffect(() => {
     if (profile._id) {
       axios
-        .get(`https://finalyearproject-be.onrender.com/api/analysis/${profile._id}`)
+        .get(`https://fypbackendfinal.onrender.com/api/analysis/${profile._id}`)
         .then((response) => {
           setAnalysis(response.data); // Set analysis data
         })
@@ -82,42 +69,33 @@ const heightInterpolation = animation.interpolate({
     }
   }, [analysis, router]);
 
-
-  // Set isMounted to true once the component has mounted
-  useEffect(() => {
-    setIsMounted(true); // Set mounted state to true after the component is mounted
-  }, []); // This will run once when the component mounts
-
-  // Check analysis after it's loaded and redirect if needed
-  // Fetch recommended actions after the profile is loaded
   useEffect(() => {
     if (profile._id) {
       axios
-        .get(`https://finalyearproject-be.onrender.com/api/sugession/${profile._id}`).then((res)=> setRecommended(res.data))
-
+        .get(`https://fypbackendfinal.onrender.com/api/sugession/${profile._id}`)
+        .then((res) => {
+          if (res.data && Array.isArray(res.data.recommendation)) {
+            setRecommended(res.data);
           } else {
-            setRecommended([]); // Fallback to empty array if structure is unexpected
+            console.error("Unexpected API response format:", res.data);
+            setRecommended({ recommendation: [] }); // Fallback to empty array
           }
-        },[profile])
-      
-      
- // This runs when profile changes (after it's loaded)
+        })
+        .catch((e) => {
+          console.error("Error fetching recommendations:", e);
+          setRecommended({ recommendation: [] }); // Fallback on error
+        });
+    }
+  }, [profile]);
 
-
-  const scrollRef = useRef<ScrollView>(null);
-  const [cardWidth, setCardWidth] = useState(0);
-  let scrollPosition = 0;
-
-
-  console.log("asdasdasdasdasdasdasdasdasdsadoo000",recommended)
   const carbonFootprint = Number(analysis?.carbonFootprint);
  
   return (
     <SafeAreaView className="flex-1 bg-[#F6ECC9]">
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
         <View className='space-y-3'>
-      <View className=' rounded-4xl p-2 mx-4 space-y-2'>
-        <Text className='text-4xl font-semibold px-4 '>
+      <View className=' rounded-4xl mt-5 p-2 mx-4 space-y-2'>
+        <Text className='text-4xl  font-semibold px-4 '>
         Hello, 
         </Text>
         <Text className='text-4xl font-semibold px-4 '>
@@ -172,7 +150,10 @@ const heightInterpolation = animation.interpolate({
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }} // Adds some padding at the bottom
       >
-        {recommended.map((point, index) => (
+      
+
+        
+        {recommended?.recommendation.map((point, index) => (
           <View
             key={index}
             className="flex items-start px-2 py-1 mb-1 rounded-lg"
@@ -182,6 +163,7 @@ const heightInterpolation = animation.interpolate({
             </Text>
           </View>
         ))}
+    
       </ScrollView>
     </View>
 

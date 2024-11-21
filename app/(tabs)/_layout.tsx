@@ -4,6 +4,7 @@ import { getStringValue } from "@/hooks/getStringValue";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Redirect, Tabs } from "expo-router";
 import { useState } from "react";
+import { View } from "react-native";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -19,11 +20,18 @@ export default function TabLayout() {
   }
  
   return (
-    <>
+   
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
           headerShown: false,
+          tabBarLabelStyle:{
+            color:"black"
+          },
+           tabBarStyle: {
+            backgroundColor:"#F6ECC9",
+            
+           }
         }}
       >
         <Tabs.Screen
@@ -44,7 +52,7 @@ export default function TabLayout() {
             title: "Blogs",
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon
-                name={focused ? "code-slash" : "code-slash-outline"}
+                name={focused ? "book" : "book-outline"}
                 color={color}
               />
             ),
@@ -54,10 +62,10 @@ export default function TabLayout() {
         <Tabs.Screen
           name="explore"
           options={{
-            title: "Explore",
+            title: "Settings",
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon
-                name={focused ? "code-slash" : "code-slash-outline"}
+                name={focused ? "settings" : "settings-outline"}
                 color={color}
               />
               
@@ -66,6 +74,5 @@ export default function TabLayout() {
         />
       </Tabs>
       
-    </>
   );
 }
