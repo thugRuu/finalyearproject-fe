@@ -35,26 +35,29 @@ export const userSchema = z.object({
 // });
 const SignUpScreen = () => {
   const router = useRouter();
-  const { control, handleSubmit, reset } = useForm({
+  const { control, handleSubmit, reset, formState:{errors} , getValues } = useForm({
     defaultValues: {
       role: "user",
       username: "",
       password: "",
       email: "",
       country: "",
+      confirmPassword:"",
       city: "",
       // test: 0,
     },
+    mode: "onBlur"
   });
   const [sliderValue, setSliderValue] = useState(0);
   const [message, setMessage] = useState("");
   const onSubmit = (data: z.infer<typeof userSchema>) => {
-    axiosInterceptor.post("/user", data).then((response)=> console.log("UserRegister Response", response.data))
-    reset()
+    console.log("data",data)
+    axiosInterceptor.post("/user", data).then((response)=> console.log("UserRegister Response", response.data)).then(()=>reset()).catch((e)=> console.log(e))
+   
   };
   return (
     <>
-      <SafeAreaView className="flex-1 p-4 bg-[#a6ccc5]">
+      <SafeAreaView className="flex-1 p-4 bg-[#F6ECC9]">
         <ScrollView
           showsVerticalScrollIndicator={false} // Hide vertical scrollbar
           showsHorizontalScrollIndicator={false} // Hide horizontal scrollbar
@@ -66,9 +69,11 @@ const SignUpScreen = () => {
           <View className="flex  space-y-8 pt-8">
             <View>
               <Text className="text-xl">Email</Text>
+              
               <Controller
                 control={control}
                 name="email"
+                rules={{ required: "Email is required" }}
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
                     autoCapitalize="none"
@@ -78,12 +83,16 @@ const SignUpScreen = () => {
                   />
                 )}
               />
+               {errors.email && (
+    <Text className="text-red-500">{errors.email.message}</Text>
+  )}
             </View>
             <View>
               <Text className="text-xl">Username</Text>
               <Controller
                 control={control}
                 name="username"
+                rules={{ required: "Username is required" }}
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
                     autoCapitalize="none"
@@ -93,12 +102,17 @@ const SignUpScreen = () => {
                   />
                 )}
               />
+               {errors.username && (
+    <Text className="text-red-500">{errors.username.message}</Text>
+  )}
             </View>
-            <View>
+            {/* <View>
+              
               <Text className="text-xl">Password</Text>
               <Controller
                 control={control}
                 name="password"
+                rules={{ required: "Password is required" }}
                 render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
                     autoCapitalize="none"
@@ -109,7 +123,10 @@ const SignUpScreen = () => {
                   />
                 )}
               />
-            </View>
+               {errors.password && (
+    <Text className="text-red-500">{errors.password.message}</Text>
+  )}
+            </View> */}
             {/* <View>
               <Text className="text-xl">Confirm Password</Text>
               <Controller
@@ -124,12 +141,58 @@ const SignUpScreen = () => {
                 )}
               />
             </View> */}
-            <View className="flex flex-row justify-between">
-              <View className="w-44 ">
+            <View>
+  <Text className="text-xl">Password</Text>
+  <Controller
+    control={control}
+    name="password"
+    rules={{ required: "Password is required" }}
+    render={({ field: { value, onChange } }) => (
+      <TextInput
+        autoCapitalize="none"
+        secureTextEntry
+        className="bg-transparent border border-solid placeholder:text-xl h-10 rounded-lg px-3"
+        value={value}
+        onChangeText={onChange}
+      />
+    )}
+  />
+  {errors.password && (
+    <Text className="text-red-500">{errors.password.message}</Text>
+  )}
+</View>
+
+<View>
+  <Text className="text-xl">Confirm Password</Text>
+  <Controller
+    control={control}
+    name="confirmPassword"
+    rules={{
+      required: "Confirm Password is required",
+      validate: (value) =>
+        value === getValues("password") || "Passwords do not match",
+    }}
+    render={({ field: { value, onChange } }) => (
+      <TextInput
+        autoCapitalize="none"
+        secureTextEntry
+        className="bg-transparent border border-solid placeholder:text-xl h-10 rounded-lg px-3"
+        value={value}
+        onChangeText={onChange}
+      />
+    )}
+  />
+  {errors.confirmPassword && (
+    <Text className="text-red-500">{errors.confirmPassword.message}</Text>
+  )}
+</View>
+            
+              <View className="">
                 <Text className="text-xl">Country</Text>
                 <Controller
                   control={control}
                   name="country"
+                  rules={{ required: "Country is required" }}
                   render={({ field: { value, onChange, onBlur } }) => (
                     <TextInput
                       className="bg-transparent focus:bg- border border-solid placeholder:text-xl h-10 rounded-lg px-3"
@@ -138,12 +201,16 @@ const SignUpScreen = () => {
                     />
                   )}
                 />
+                 {errors.country && (
+    <Text className="text-red-500">{errors.country.message}</Text>
+  )}
               </View>
-              <View className="w-44">
+              <View className="">
                 <Text className="text-xl">City</Text>
                 <Controller
                   control={control}
                   name="city"
+                  rules={{ required: "City is required" }}
                   render={({ field: { value, onChange, onBlur } }) => (
                     <TextInput
                       className="bg-transparent focus:bg- border border-solid placeholder:text-xl h-10 rounded-lg px-3"
@@ -152,6 +219,9 @@ const SignUpScreen = () => {
                     />
                   )}
                 />
+                 {errors.city && (
+    <Text className="text-red-500">{errors.city.message}</Text>
+  )}
               </View>
             </View>
             <Pressable className="pt-4" onPress={handleSubmit(onSubmit)}>
@@ -163,7 +233,7 @@ const SignUpScreen = () => {
                 Sign Up{" "}
               </Text>
             </Pressable>
-            <View>
+            <View className="pt-4">
               <Text>
                 Already have an Account?{" "}
                 <Link
@@ -173,7 +243,7 @@ const SignUpScreen = () => {
                   Log in
                 </Link>
               </Text>
-            </View>
+            
           </View>
         </ScrollView>
       </SafeAreaView>

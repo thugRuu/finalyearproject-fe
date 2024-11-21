@@ -7,13 +7,17 @@ import { useState } from "react";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const [auth, setAuth] = useState("");
+  const [auth, setAuth] = useState({ username: '', _id: '', token: '',role:'' });
 
   getStringValue("details").then((a) => setAuth(a!));
 
   if (auth === null) {
     return <Redirect href="/login" />;
   }
+  if(auth.role === 'admin'){
+    return <Redirect href="/admin" />;
+  }
+ 
   return (
     <>
       <Tabs
@@ -35,9 +39,9 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="profile"
+          name="blogs"
           options={{
-            title: "Profile",
+            title: "Blogs",
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon
                 name={focused ? "code-slash" : "code-slash-outline"}
