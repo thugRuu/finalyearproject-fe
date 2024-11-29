@@ -2,7 +2,7 @@ import { getStringValue } from "@/hooks/getStringValue";
 import axios from "axios";
 
 const axiosInterceptor = axios.create({
-  baseURL: "https://fypbackendfinal.onrender.com/api",
+  baseURL: "http://192.168.45.131:8000/api",
   timeout: 10000,
   headers: {
     Accept: "application/json",

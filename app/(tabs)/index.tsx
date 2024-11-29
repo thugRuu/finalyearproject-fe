@@ -54,7 +54,7 @@ export default function HomePage() {
   useEffect(() => {
     if (profile._id) {
       axios
-        .get(`https://fypbackendfinal.onrender.com/api/analysis/${profile._id}`)
+        .get(`http://192.168.45.131:8000/api/analysis/${profile._id}`)
         .then((response) => {
           setAnalysis(response.data); // Set analysis data
         })
@@ -72,7 +72,7 @@ export default function HomePage() {
   useEffect(() => {
     if (profile._id) {
       axios
-        .get(`https://fypbackendfinal.onrender.com/api/sugession/${profile._id}`)
+        .get(`http://192.168.45.131:8000/api/sugession/${profile._id}`)
         .then((res) => {
           if (res.data && Array.isArray(res.data.recommendation)) {
             setRecommended(res.data);

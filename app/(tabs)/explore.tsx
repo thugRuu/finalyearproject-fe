@@ -53,7 +53,7 @@ export default function TabTwoScreen() {
   useEffect(()=>{
     if (profile?._id) {
       axios
-        .get(`https://fypbackendfinal.onrender.com/api/user/${profile._id}`)
+        .get(`http://192.168.45.131:8000/api/user/${profile._id}`)
         .then((response) => {
           const data = response.data;
           setUserData(data); // Update state with user data

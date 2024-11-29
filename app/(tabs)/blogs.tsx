@@ -25,7 +25,7 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("https://fypbackendfinal.onrender.com/api/blogs");
+        const res = await axios.get("http://192.168.45.131:8000/api/blogs");
         setBlogs(res.data);
       } catch (error) {
         console.error("Error fetching blogs data:", error);

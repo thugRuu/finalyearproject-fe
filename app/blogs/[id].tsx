@@ -48,7 +48,7 @@ const router = useRouter();
 
     const fetchAnswers = async () => {
       try {
-        const response = await axios.get(`https://fypbackendfinal.onrender.com/api/blogs/${id}`);
+        const response = await axios.get(`http://192.168.45.131:8000/api/blogs/${id}`);
         setBlogDetails(response.data);
       } catch (error) {
         console.error("Error fetching blog details:", error);

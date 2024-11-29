@@ -24,15 +24,7 @@ export const userSchema = z.object({
   city: z.string(),
   role: z.string(),
 });
-// .superRefine(({ confirmPassword, password }, ctx) => {
-//   if (confirmPassword !== password) {
-//     ctx.addIssue({
-//       code: "custom",
-//       message: "The passwords did not match",
-//       path: ["confirmPassword"],
-//     });
-//   }
-// });
+
 const SignUpScreen = () => {
   const router = useRouter();
   const { control, handleSubmit, reset, formState:{errors} , getValues } = useForm({
